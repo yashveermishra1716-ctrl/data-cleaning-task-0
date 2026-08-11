@@ -1,0 +1,244 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rim7a5_Y4E1b",
+        "outputId": "f44ca729-63f6-4b2f-ce72-e1b6751d4b0c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "========== ORIGINAL DATASET ==========\n",
+            "\n",
+            "First 5 Rows:\n",
+            "   CustomerID  Gender  Age  Annual Income (k$)  Spending Score (1-100)\n",
+            "0           1    Male   19                  15                      39\n",
+            "1           2    Male   21                  15                      81\n",
+            "2           3  Female   20                  16                       6\n",
+            "3           4  Female   23                  16                      77\n",
+            "4           5  Female   31                  17                      40\n",
+            "\n",
+            "Dataset Shape:\n",
+            "(200, 5)\n",
+            "\n",
+            "Missing Values:\n",
+            "CustomerID                0\n",
+            "Gender                    0\n",
+            "Age                       0\n",
+            "Annual Income (k$)        0\n",
+            "Spending Score (1-100)    0\n",
+            "dtype: int64\n",
+            "\n",
+            "Duplicate Rows:\n",
+            "0\n",
+            "\n",
+            "Data Types:\n",
+            "CustomerID                 int64\n",
+            "Gender                    object\n",
+            "Age                        int64\n",
+            "Annual Income (k$)         int64\n",
+            "Spending Score (1-100)     int64\n",
+            "dtype: object\n",
+            "\n",
+            "Original Column Names:\n",
+            "['CustomerID', 'Gender', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']\n",
+            "\n",
+            "========== AFTER CLEANING ==========\n",
+            "\n",
+            "Missing Values After Cleaning:\n",
+            "customer_id        0\n",
+            "gender             0\n",
+            "age                0\n",
+            "annual_income_k    0\n",
+            "spending_score     0\n",
+            "dtype: int64\n",
+            "\n",
+            "Duplicate Rows After Cleaning:\n",
+            "0\n",
+            "\n",
+            "Final Data Types:\n",
+            "customer_id         int64\n",
+            "gender             object\n",
+            "age                 int64\n",
+            "annual_income_k     int64\n",
+            "spending_score      int64\n",
+            "dtype: object\n",
+            "\n",
+            "Cleaned Dataset:\n",
+            "   customer_id  gender  age  annual_income_k  spending_score\n",
+            "0            1    Male   19               15              39\n",
+            "1            2    Male   21               15              81\n",
+            "2            3  Female   20               16               6\n",
+            "3            4  Female   23               16              77\n",
+            "4            5  Female   31               17              40\n",
+            "\n",
+            "Final Column Names:\n",
+            "['customer_id', 'gender', 'age', 'annual_income_k', 'spending_score']\n",
+            "\n",
+            "======================================\n",
+            "Cleaned dataset saved successfully!\n",
+            "File: cleaned_mall_customers.csv\n",
+            "======================================\n"
+          ]
+        }
+      ],
+      "source": [
+        "# ============================================\n",
+        "# DATA ANALYST INTERNSHIP - TASK 1\n",
+        "# DATA CLEANING AND PREPROCESSING\n",
+        "# Dataset: Mall Customers\n",
+        "# ============================================\n",
+        "\n",
+        "import pandas as pd\n",
+        "\n",
+        "# 1. Load the dataset\n",
+        "df = pd.read_csv('/content/Mall_Customers.csv')\n",
+        "\n",
+        "print(\"========== ORIGINAL DATASET ==========\")\n",
+        "\n",
+        "# Display first 5 rows\n",
+        "print(\"\\nFirst 5 Rows:\")\n",
+        "print(df.head())\n",
+        "\n",
+        "# 2. Check dataset size\n",
+        "print(\"\\nDataset Shape:\")\n",
+        "print(df.shape)\n",
+        "\n",
+        "# 3. Check missing values\n",
+        "print(\"\\nMissing Values:\")\n",
+        "print(df.isnull().sum())\n",
+        "\n",
+        "# 4. Check duplicate rows\n",
+        "print(\"\\nDuplicate Rows:\")\n",
+        "print(df.duplicated().sum())\n",
+        "\n",
+        "# 5. Check data types\n",
+        "print(\"\\nData Types:\")\n",
+        "print(df.dtypes)\n",
+        "\n",
+        "# 6. Check original column names\n",
+        "print(\"\\nOriginal Column Names:\")\n",
+        "print(df.columns.tolist())\n",
+        "\n",
+        "\n",
+        "# ============================================\n",
+        "# DATA CLEANING\n",
+        "# ============================================\n",
+        "\n",
+        "# 7. Remove duplicate rows\n",
+        "df = df.drop_duplicates()\n",
+        "\n",
+        "# 8. Standardize column names\n",
+        "df.columns = [\n",
+        "    'customer_id',\n",
+        "        'gender',\n",
+        "            'age',\n",
+        "                'annual_income_k',\n",
+        "                    'spending_score'\n",
+        "                    ]\n",
+        "\n",
+        "# 9. Standardize Gender values\n",
+        "df['gender'] = df['gender'].str.strip().str.title()\n",
+        "# 10. Check missing values after cleaning\n",
+        "print(\"\\n========== AFTER CLEANING ==========\")\n",
+        "\n",
+        "print(\"\\nMissing Values After Cleaning:\")\n",
+        "print(df.isnull().sum())\n",
+        "\n",
+        "print(\"\\nDuplicate Rows After Cleaning:\")\n",
+        "print(df.duplicated().sum())\n",
+        "\n",
+        "# 11. Check final data types\n",
+        "print(\"\\nFinal Data Types:\")\n",
+        "print(df.dtypes)\n",
+        "# 12. Display cleaned data\n",
+        "print(\"\\nCleaned Dataset:\")\n",
+        "print(df.head())\n",
+        "# 13. Display final column names\n",
+        "print(\"\\nFinal Column Names:\")\n",
+        "print(df.columns.tolist())\n",
+        "\n",
+        "# 14. Save cleaned dataset\n",
+        "df.to_csv('/content/cleaned_mall_customers.csv', index=False)\n",
+        "\n",
+        "print(\"\\n======================================\")\n",
+        "print(\"Cleaned dataset saved successfully!\")\n",
+        "print(\"File: cleaned_mall_customers.csv\")\n",
+        "print(\"======================================\")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')"
+      ],
+      "metadata": {
+        "id": "pX9R0E9pV9VZ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# New Section"
+      ],
+      "metadata": {
+        "id": "_YTqSx3iWWfX"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import files\n",
+        "\n",
+        "files.download('/content/cleaned_mall_customers.csv')\n"
+      ],
+      "metadata": {
+        "id": "caVRPbGBQPMj",
+        "outputId": "6f590a41-db3f-49d1-9a66-ce5530333219",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 401
+        }
+      },
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "FileNotFoundError",
+          "evalue": "Cannot find file: /content/cleaned_mall_customers.csv",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mFileNotFoundError\u001b[0m                         Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipykernel_2464/2445664047.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mfrom\u001b[0m \u001b[0mgoogle\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcolab\u001b[0m \u001b[0;32mimport\u001b[0m \u001b[0mfiles\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 3\u001b[0;31m \u001b[0mfiles\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdownload\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'/content/cleaned_mall_customers.csv'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;32m/usr/local/lib/python3.12/dist-packages/google/colab/files.py\u001b[0m in \u001b[0;36mdownload\u001b[0;34m(filename)\u001b[0m\n\u001b[1;32m    228\u001b[0m   \u001b[0;32mif\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0m_os\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpath\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mexists\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfilename\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    229\u001b[0m     \u001b[0mmsg\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'Cannot find file: {}'\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mformat\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfilename\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 230\u001b[0;31m     \u001b[0;32mraise\u001b[0m \u001b[0mFileNotFoundError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmsg\u001b[0m\u001b[0;34m)\u001b[0m  \u001b[0;31m# pylint: disable=undefined-variable\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    231\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    232\u001b[0m   \u001b[0mcomm_manager\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_IPython\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget_ipython\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkernel\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcomm_manager\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mFileNotFoundError\u001b[0m: Cannot find file: /content/cleaned_mall_customers.csv"
+          ]
+        }
+      ]
+    }
+  ]
+}
